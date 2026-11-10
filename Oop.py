@@ -9,28 +9,52 @@ class ShoppingCart:
             if i["name"] == name:
                 i["qty"] += qty
                 return
-
         item = {"name": name, "price":price, "qty":qty}
         self.items.append(item)
 
     def remove_item(self,name, qty: int = 1):
         for i in self.items:
-            self.items.remove(i)
+            if i["name"] == name:
+                self.items.remove(i)
+            return
+
+
 
     def total_price(self):
-        a = ["price"]
-        b = ["qty"]
-        return a * b
+        pris = 0
+        for i in self.items:
+            price = i["price"]
+            qty = i["qty"]
+            pris = pris + (price * qty)
+        return pris
+
 
     def __str__(self):
-        return f'название-{["name"]} цена-{["price"]} количество{["qty"]}'
+        lines = [f'Название: {i["name"]} | Цена: {i["price"]} руб. | Количество: {i["qty"]}' for i in self.items]
+        return "\n".join(lines)
 
 
 
 
-item1 = ShoppingCart()
-item2 = ShoppingCart()
-item1.add_item("lamoda",12000,1)
-item2.add_item("lamoda",12000,2)
+#проверку нейронкой сделал.
 
-print(item1.items)
+raw_products = [
+    {"name": "Молоко", "price": 89.90, "qty": 2},
+    {"name": "Хлеб", "price": 45.00, "qty": 1},
+    {"name": "Шоколад", "price": 120.00, "qty": 3},
+    {"name": "Яблоки", "price": 150.00}, # количество сработает по умолчанию (=1)
+]
+
+# 2. Создаем один объект корзины
+cart = ShoppingCart()
+
+# 3. Автоматически загружаем все товары одной строчкой кода
+for prod in raw_products:
+    cart.add_item(**prod) # Оператор ** распаковывает ключи словаря в аргументы функции
+
+# Проверяем работу
+print("--- Содержимое корзины ---")
+print(cart)
+
+print("\n--- Общая стоимость ---")
+print(f"{cart.total_price()} руб.")
