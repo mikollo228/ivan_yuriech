@@ -14,7 +14,6 @@ class Calculator:
         self.memory.append(alga)
         return alga
 
-
     def get_memory(self):
         return self.memory
 
